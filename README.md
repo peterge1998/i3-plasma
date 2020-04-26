@@ -2,7 +2,7 @@
 
 ## Move Config:
 
-mv config ~/.config/i3/config
+`mv config ~/.config/i3/config`
 
 ## Install required programs:
 
