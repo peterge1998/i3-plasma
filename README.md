@@ -3,6 +3,7 @@
 ## Move Config:
 
 `mv config ~/.config/i3/config`
+
 `mv plasma-i3.desktop /usr/share/xsessions/`
 
 ## Install required programs:
