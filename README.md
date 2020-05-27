@@ -15,7 +15,22 @@
 `pacman -S xclip scrot`
 
 
-## Other Linux program specific settings, not related to i3 at all:
+
+
+
+# Generic Arch/Manjaro setup. Not releated to i3-plasma at all:
+
+
+
+yay -S spotify firefox teamspeak3a
+
+### Spotify:
+
+If Spotify gets muted on desktop "beepds", comment out "module-role-cork" in pulse audio configuration file:
+`/etc/pulse/default.pa`
+`load-module module-role-cork `
+Or simply unload it with: `pactl unload-module module-role-cork`
+
 
 ### Firefox:
 
