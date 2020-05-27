@@ -27,8 +27,11 @@ yay -S spotify firefox teamspeak3a
 ### Spotify:
 
 If Spotify gets muted on desktop "beepds", comment out "module-role-cork" in pulse audio configuration file:
+
 `/etc/pulse/default.pa`
+
 `load-module module-role-cork `
+
 Or simply unload it with: `pactl unload-module module-role-cork`
 
 
