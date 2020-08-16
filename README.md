@@ -4,7 +4,7 @@ git clone https://github.com/peterge1998/i3-plasma && cd i3-plasma
 
 ## Move Config:
 
-`mv config ~/.config/i3/config`
+`mv i3/config ~/.config/i3/config`
 
 `mv plasma-i3.desktop /usr/share/xsessions/`
 
@@ -24,11 +24,11 @@ git clone https://github.com/peterge1998/i3-plasma && cd i3-plasma
 
 
 
-yay -S spotify firefox teamspeak3a
+yay -S spotify firefox teamspeak3
 
 ### Spotify:
 
-If Spotify gets muted on desktop "beepds", comment out "module-role-cork" in pulse audio configuration file:
+If Spotify gets muted on desktop "beeps", comment out "module-role-cork" in pulse audio configuration file:
 
 `/etc/pulse/default.pa`
 
