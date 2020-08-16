@@ -250,7 +250,9 @@ mode "resize" {
 #enter resize mode
 bindsym $mod+r mode "resize"
 
-# --- Monitor Setup ---
+#############################
+### Monitor Setup         ###
+#############################
 
 set $primary_screen DisplayPort-0
 set $secondary_screen DisplayPort-1
@@ -265,10 +267,9 @@ workspace 7 output $primary_screen
 workspace 8 output $secondary_screen
 workspace 9 output $primary_screen
 
-# --- Theme ---
-workspace 2 output $secondary_screen
-
-# --- Theme ---
+#############################
+### Theming               ###
+#############################
 
 # set primary gruvbox colorscheme colors
 
@@ -302,10 +303,6 @@ font pango:Hack 8
 #        active_workspace     $darkgray $darkgray $yellow
 #        urgent_workspace     $red $red $bg
 #    }}
-
-#############################
-### Theming               ###
-#############################
 
 ### green gruvbox
 # class                 border|backgr|text|indicator|child_border
