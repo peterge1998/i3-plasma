@@ -1,6 +1,6 @@
 # i3-plasma
 
-git clone https://github.com/peterge1998/i3-plasma && cd i3-plasma
+`git clone https://github.com/peterge1998/i3-plasma && cd i3-plasma`
 
 ## Move Config:
 
