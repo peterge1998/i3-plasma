@@ -4,25 +4,30 @@
 # Should you change your keyboard layout some time, delete
 # this file and re-run i3-config-wizard(1).
 #
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 # i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+# Polybar
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# Picom
+# https://github.com/heckelson/i3-and-kde-plasma
+exec_always --no-startup-id picom --backend glx --experimental-backends -bc
+
 #Mod Key
 set $mod Mod4
 
-#####
-# Plasma Settings
-#####
+#############################
+### Plasma settings       ###
+#############################
+
 #no_focus [window_type="notification"]
 #no_focus [class="plasmashell" window_type="notification"]
 #no_focus [class="plasmashell" window_type="on_screen_display"]
 #no_focus [window_role="pop-up"]
 #no_focus [class="plasmashell"]
 #no_focus [class="firefox" window_type="notification"]
-
-
 for_window [class="plasmashell"] floating enable
 for_window [class="Plasma"] floating enable; border none
 for_window [title="plasma-desktop"] floating enable
@@ -37,6 +42,7 @@ for_window [class="Kmix"] floating enable; border none
 for_window [class="Klipper"] floating enable; border none
 for_window [class="Plasmoidviewer"] floating enable; border none
 for_window [class="plasmashell" window_type="notification"] floating enable, border none, move right 700px, move down 450px, no_focus 
+for_window [title="Desktop — Plasma"] kill; floating enable; border none
 
 # Float by type
 for_window [window_role="pop-up"] floating enable
@@ -44,6 +50,14 @@ for_window [window_role="task_dialog"] floating enable
 for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
 
+# Plasma compatibility improvements
+for_window [class="yakuake"] floating enable
+for_window [class="systemsettings"] floating enable
+for_window [class="(?i)*nextcloud*"] floating disable
+for_window [class="plasmashell" window_type="notification"] border none, move right 700px, move down 450px
+
+#origin
+for_window [instance="origin.exe"] floating enable
 
 #focus_follows_mouse yes
 
@@ -52,7 +66,6 @@ no_focus [window_role="pop-up"]
 no_focus [window_type="notification"]
 
 focus_on_window_activation none
-
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -79,10 +92,6 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-#gaps
-for_window [class=".*"] border pixel 1 
-gaps inner 4 
 
 #run on boot
 exec_always ~/scripts/spotify/launchlistener.sh
@@ -164,11 +173,16 @@ set $ws2 "2"
 set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
-set $ws6 "6"
+set $ws6 "6 Spotify + TS"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+
+# Assign Workspaces:
+# ka was die zeile macht:
+#assign [class="spotify"] $ws6
+for_window [class="Spotify"] move to workspace $ws6
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -186,7 +200,6 @@ bindsym $mod+0 workspace number $ws10
 #bindsym $mod+button4 workspace next
 bindsym --whole-window $mod+button4 workspace prev_on_output
 bindsym --whole-window $mod+button5 workspace next_on_output
-
 
 # back to previous workspace when pressing combination of the current workspace
 workspace_auto_back_and_forth yes
@@ -209,6 +222,9 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+#exit i3 session
+bindsym $mod+End exec --no-startup-id qdbus org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 -1 -1
 
 # --- resize window (you can also use the mouse for that) ---
 mode "resize" {
@@ -236,8 +252,8 @@ bindsym $mod+r mode "resize"
 
 # --- Monitor Setup ---
 
-set $primary_screen DisplayPort-1
-set $secondary_screen DisplayPort-0
+set $primary_screen DisplayPort-0
+set $secondary_screen DisplayPort-1
 
 workspace 1 output $primary_screen
 workspace 2 output $secondary_screen
@@ -287,7 +303,9 @@ font pango:Hack 8
 #        urgent_workspace     $red $red $bg
 #    }}
 
-#start of window title bars & borders section
+#############################
+### Theming               ###
+#############################
 
 ### green gruvbox
 # class                 border|backgr|text|indicator|child_border
@@ -306,13 +324,23 @@ font pango:Hack 8
 
 ### dracula
 # class                 border  bground text    indicator child_border
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-client.background       #F8F8F2
-client.background       #F8F8F2
+#client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+#client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+#client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+#client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+#client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+#client.background       #F8F8F2
+#client.background       #F8F8F2
+
+### big sur
+# class                 border  backgr. text    indicator child_border
+client.focused          #283593 #285577 #ffffff #ffffff   #6a1b9a
+client.focused_inactive #ffffff #5f676a #ffffff #484e50   #002b36
+client.unfocused        #333333 #222222 #888888 #292d2e   #002b36
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #ffffff
+
 
 bar {
   status_command i3status
@@ -328,17 +356,87 @@ bar {
     binding_mode       #FF5555 #FF5555 #F8F8F2
   }
 }
+
 #bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
 
 #end of window title bars & borders section
 
-#Screenshot Source: https://www.reddit.com/r/i3wm/comments/65vis5/screenshot_commands_from_my_i3_config/
+#############################
+### Screenshot            ###
+#############################
+
+# Screenshot Source: https://www.reddit.com/r/i3wm/comments/65vis5/screenshot_commands_from_my_i3_config/
 # Multi-screen screenshots with scrot
 bindsym --release Print exec scrot -p 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # All screens
 
 # OSX-like area selection screenshots
-bindsym --release $mod+Shift+s exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # Area selection
+bindsym --release $mod+Shift+s exec scrot --freeze -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # Area selection
 
-#Wallpaper
-exec_always feh --bg-scale ~/Pictures/wallpaper/night_sky_snow-wallpaper-1920x1080.jpg
+#############################
+### Wallpaper             ###
+#############################
+
+exec_always feh --bg-scale ~/Wallpaper/bigsur.jpg
+
+# Randomize Wallpapers
 #exec_always feh --randomize --bg-scale ~/Pictures/wallpaper/*
+
+#############################
+### settings for i3-gaps: ###
+#############################
+
+# Set inner/outer gaps
+for_window [class="^.*"] border pixel 1
+gaps inner 10
+gaps outer 1
+
+# Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
+# gaps inner|outer current|all set|plus|minus <px>
+# gaps inner all set 10
+# gaps outer all plus 5
+
+# Smart gaps (gaps used if only more than one container on the workspace)
+smart_gaps on
+
+# Smart borders (draw borders around container only if it is not the only container on this workspace) 
+# on|no_gaps (on=always activate and no_gaps=only activate if the gap size to the edge of the screen is 0)
+smart_borders on
+
+# Press $mod+Shift+g to enter the gap mode. Choose o or i for modifying outer/inner gaps. Press one of + / - (in-/decrement for current workspace) or 0 (remove gaps for current workspace). If you also press Shift with these keys, the change will be global for all workspaces.
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_inner" {
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+border_radius 5
