@@ -59,6 +59,9 @@ for_window [class="plasmashell" window_type="notification"] border none, move ri
 #origin
 for_window [instance="origin.exe"] floating enable
 
+#teams
+for_window [title="Microsoft Teams Notification"] floating enable
+
 #focus_follows_mouse yes
 
 no_focus [class="plasmashell"]
@@ -435,5 +438,3 @@ mode "$mode_gaps_outer" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-
-border_radius 5
