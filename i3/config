@@ -13,7 +13,7 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Picom
 # https://github.com/heckelson/i3-and-kde-plasma
-exec_always --no-startup-id picom --backend glx --experimental-backends -bc
+exec_always --no-startup-id picom --config ~/.config/picom.conf -b --experimental-backends
 
 #Mod Key
 set $mod Mod4
@@ -22,13 +22,15 @@ set $mod Mod4
 ### Plasma settings       ###
 #############################
 
+# get window class name: xprop | grep -i 'class'
+
 #no_focus [window_type="notification"]
 #no_focus [class="plasmashell" window_type="notification"]
 #no_focus [class="plasmashell" window_type="on_screen_display"]
 #no_focus [window_role="pop-up"]
 #no_focus [class="plasmashell"]
 #no_focus [class="firefox" window_type="notification"]
-for_window [class="plasmashell"] floating enable
+for_window [class="plasmashell"] floating enable; border none
 for_window [class="Plasma"] floating enable; border none
 for_window [title="plasma-desktop"] floating enable
 for_window [class="Plasmoidviewer"] floating enable
@@ -41,7 +43,8 @@ for_window [class="krunner"] floating enable; border none
 for_window [class="Kmix"] floating enable; border none
 for_window [class="Klipper"] floating enable; border none
 for_window [class="Plasmoidviewer"] floating enable; border none
-for_window [class="plasmashell" window_type="notification"] floating enable, border none, move right 700px, move down 450px, no_focus 
+for_window [class="plasmashell" window_type="notification"] floating enable, border none, no_focus
+#, move right 700px, move down 450px, no_focus
 for_window [title="Desktop — Plasma"] kill; floating enable; border none
 
 # Float by type
@@ -61,6 +64,9 @@ for_window [instance="origin.exe"] floating enable
 
 #teams
 for_window [title="Microsoft Teams Notification"] floating enable
+
+#teams
+for_window [class="KeePassXC"] floating enable
 
 #focus_follows_mouse yes
 
@@ -112,7 +118,12 @@ bindsym $mod+Shift+q kill
 bindsym --whole-window $mod+button2 kill
 
 # start rofi (a program launcher)
-bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"DejaVu 15\\" -theme ~/.config/rofi/breeze-dracula -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'" 
+#bindsym $mod+d exec --no-startup-id "rofi -combi-modi drun,ssh -show combi -font \\"DejaVu 15\\" -theme ~/.config/rofi/breeze-dracula -icon-theme \\"Papirus\\" -show-icons -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'" 
+#bindsym $mod+d exec "rofi -show run"
+#set $menu --no-startup-id qdbus org.kde.krunner /App display
+#bindsym $mod+d exec $menu
+# j4-dmenu-desktop -- A faster replacement for i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id j4-dmenu-desktop --dmenu="dmenu -i -fn 'DejaVu Sans-10' -l 20"
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -171,13 +182,13 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
+set $ws1 "1  "
 set $ws2 "2"
-set $ws3 "3"
+set $ws3 "3  "
 set $ws4 "4"
 set $ws5 "5"
-set $ws6 "6 Spotify + TS"
-set $ws7 "7"
+set $ws6 "6  +  "
+set $ws7 "7  "
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
@@ -305,7 +316,7 @@ font pango:Hack 8
 #        inactive_workspace   $darkgray $darkgray $yellow
 #        active_workspace     $darkgray $darkgray $yellow
 #        urgent_workspace     $red $red $bg
-#    }}
+#}}
 
 ### green gruvbox
 # class                 border|backgr|text|indicator|child_border
@@ -324,38 +335,67 @@ font pango:Hack 8
 
 ### dracula
 # class                 border  bground text    indicator child_border
-#client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-#client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-#client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-#client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-#client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-#client.background       #F8F8F2
-#client.background       #F8F8F2
+client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+client.background       #F8F8F2
+client.background       #F8F8F2
 
 ### big sur
 # class                 border  backgr. text    indicator child_border
-client.focused          #283593 #285577 #ffffff #ffffff   #6a1b9a
-client.focused_inactive #ffffff #5f676a #ffffff #484e50   #002b36
-client.unfocused        #333333 #222222 #888888 #292d2e   #002b36
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-client.background       #ffffff
+#client.focused          #283593 #285577 #ffffff #ffffff   #6a1b9a
+#client.focused_inactive #ffffff #5f676a #ffffff #484e50   #002b36
+#client.unfocused        #333333 #222222 #888888 #292d2e   #002b36
+#client.urgent           #2f343a #900000 #ffffff #900000   #900000
+#client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+#client.background       #ffffff
 
+#bar {
+#  status_command i3status
+#  colors {
+#    background #282A36
+#    statusline #F8F8F2
+#    separator  #44475A
+#    focused_workspace  #44475A #44475A #F8F8F2
+#    active_workspace   #282A36 #44475A #F8F8F2
+#    inactive_workspace #282A36 #282A36 #BFBFBF
+#    urgent_workspace   #FF5555 #FF5555 #F8F8F2
+#    binding_mode       #FF5555 #FF5555 #F8F8F2
+#  }
+#}
 
 bar {
-  status_command i3status
-  colors {
-    background #282A36
-    statusline #F8F8F2
-    separator  #44475A
-
-    focused_workspace  #44475A #44475A #F8F8F2
-    active_workspace   #282A36 #44475A #F8F8F2
-    inactive_workspace #282A36 #282A36 #BFBFBF
-    urgent_workspace   #FF5555 #FF5555 #F8F8F2
-    binding_mode       #FF5555 #FF5555 #F8F8F2
-  }
+    font pango:DroidSansMono Nerd Font, FontAwesome 11
+    position bottom
+    status_command /usr/bin/i3status-rs ~/.config/i3/status.toml
+    colors {
+        separator #6272A4
+	background #252733
+        statusline #dddddd
+#        focused_workspace #282A36 #6272A4 #050700
+	focused_workspace #050700 #ffaf00 #050700
+        active_workspace #050700 #ffaf00 #050700
+        inactive_workspace #444444 #444444 #ffd680
+#        inactive_workspace #ffd680 #444444 #050700
+        urgent_workspace #2f343a #444444 #050700
+    }
 }
+#bar {
+    #font pango:Google Sans, FontAwesome 12
+   # position bottom
+  #  status_command /usr/bin/i3status-rs ~/.config/i3/status.toml
+ #   colors {
+#        separator #666666
+#        background #222222
+        #statusline #dddddd
+        #focused_workspace #0088CC #0088CC #ffffff
+       # active_workspace #333333 #333333 #ffffff
+      #  inactive_workspace #333333 #333333 #888888
+     #   urgent_workspace #2f343a #900000 #ffffff
+    #}
+#}
 
 #bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
 
@@ -376,7 +416,7 @@ bindsym --release $mod+Shift+s exec scrot --freeze -s 'screenshot_%Y%m%d_%H%M%S.
 ### Wallpaper             ###
 #############################
 
-exec_always feh --bg-scale ~/Wallpaper/bigsur.jpg
+exec_always feh --bg-scale ~/Wallpaper/arch_dracula.png
 
 # Randomize Wallpapers
 #exec_always feh --randomize --bg-scale ~/Pictures/wallpaper/*
